@@ -3,7 +3,7 @@ const pokeName = document.querySelector('[data-poke-name]');
 const pokeContainer = document.querySelector('[data-poke-img-container]');
 const pokeImg = document.querySelector('[data-poke-img]');
 const pokeId = document.querySelector('[data-poke-id]');
-const pokeTypes = document.querySelector('[data-poke-type]');
+const pokeTypes = document.querySelector('[data-poke-types]');
 const pokeStats = document.querySelector('[data-poke-stats]');
 
 const typeColors = {
@@ -43,10 +43,38 @@ const renderPokemonData = data => {
     pokeImg.setAttribute('src', sprite);
     pokeId.textContent = `N° ${data.id}`;
     setCardColor(types);
+    renderPokemonTypes(types);
+    renderPokemonStats(stats);
 }
 
 
 const setCardColor = types => {
     const colorOne = typeColors[types[0].type.name];
     const colorTwo = types[1] ? typeColors[types[1].type.name] : typeColors.default;
+    pokeImg.style.background = `radial-gradient(${colorTwo} 33%, ${colorOne} 33%)`;
+    pokeImg.style.backgroundSize = '5px 5px';
+}
+
+const renderPokemonTypes = types => {
+    pokeTypes.innerHTML = '';
+    types.forEach(type => {
+        const typeTextElement = document.createElement("div");
+        typeTextElement.style.color = typeColors[type.type.name];
+        typeTextElement.textContent = type.type.name;
+        pokeTypes.appendChild(typeTextElement);
+    });
+}
+
+const renderPokemonStats = stats => {
+    pokeStats.innerHTML = '';
+    stats.forEach(stat => {
+        const statElement = document.createElement("div");
+        const statElementName = document.createElement("div");
+        const statElementAmount = document.createElement("div");
+        statElementName.textContent = stat.stat.name;
+        statElementAmount.textContent = stat.base_stat;
+        statElement.appendChild(statElementName);
+        statElement.appendChild(statElementAmount);
+        pokeStats.appendChild(statElement);
+    });
 }
